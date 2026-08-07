@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<title>Defend the Keep! v.064</title>
+<title>Defend the Keep! v.129 — Wall Polish</title>
 <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -24,10 +24,12 @@
    <div class="groupLabel">UNITS</div>
    <div class="buttonGrid">
     <button class="unit" data-type="warrior"><span class="icon">⚔️</span>WARRIOR<br><span class="cost">1 coin</span></button>
+<button class="unit" data-type="friendlyBerserker"><span class="icon">🪓</span>BERSERKER<br><span class="cost">3 coins</span></button>
     <button class="unit" data-type="archer"><span class="icon">🏹</span>ARCHER<br><span class="cost">2 coins</span></button>
     <button class="unit" data-type="fireArcher"><span class="icon">🔥</span>FIRE ARCHER<br><span class="cost">5 coins</span></button>
     <button class="unit" data-type="knight"><span class="icon">🐎</span>KNIGHT<br><span class="cost">6 coins</span></button>
-    <button class="unit" data-type="tower"><span class="icon">🏰</span>TOWER<br><span class="cost">10 coins</span></button>
+    <button class="unit" data-type="tower"><span class="icon">🏰</span>TOWER<br><span class="cost">20 coins</span></button>
+<button class="unit" data-type="wall"><span class="icon">🧱</span>WALL<br><span class="cost">10 coins</span></button>
     <button class="unit" data-type="catapult"><span class="icon">🪨</span>CATAPULT<br><span class="cost">12 coins</span></button>
     <button class="unit" data-type="dragon"><span class="icon">🐉</span>DRAGON<br><span class="cost">100 coins</span></button>
     <button class="unit" data-type="carpenter"><span class="icon">🔨</span>CARPENTER<br><span class="cost">10 coins</span></button>
@@ -39,31 +41,52 @@
     <button class="strategy" data-command="formation"><span class="icon">⋁</span>FORMATION<small>organize nearby</small></button>
     <button class="strategy" data-command="fallback"><span class="icon">↙</span>FALL BACK<small>return to Keep</small></button>
     <button class="strategy" data-command="help"><span class="icon">!</span>HELP!<small>focus nearby threat</small></button>
+    <button class="strategy" data-command="retreatInjured"><span class="icon">✚</span>RETREAT WOUNDED<small>heal at the wall</small></button>
+<button id="stanceToggle" class="strategy stance aggressive" aria-label="Toggle battle stance"><span class="stanceHalf stanceTop">AGGRESSIVE</span><span class="stanceHalf stanceBottom">DEFENSIVE</span></button>
    </div>
   </div>
  </div>
 </div>
 <div id="hint">Choose a unit or strategy, then tap the battlefield.</div><div id="toast"></div>
-<section id="title" class="screen"><div id="sign"><h1 class="logo">DEFEND<br>THE KEEP!</h1><div class="by">by Andy Linn</div><div class="ver">V. .064 · THE JUICE UPDATE</div><button id="start" class="menu gold">RAISE THE GATES</button><button id="hallOpen" class="menu">HALL OF HEROES</button></div></section>
-<section id="nameScreen" class="screen hidden"><div class="nameBox"><h2>WHO COMMANDS THE KEEP?</h2><p>Enter the name your heroes will proudly serve.</p><input id="playerName" maxlength="18" autocomplete="name" placeholder="Andy"><button id="nameGo" class="menu gold">BEGIN THE DEFENSE</button></div></section>
-<section id="over" class="screen hidden"><div class="panel"><h1>THE KEEP HAS FALLEN</h1><p id="summary"></p><button id="again" class="menu gold">DEFEND AGAIN</button><button id="hallOver" class="menu">HALL OF HEROES</button><button id="backTitle" class="menu">TITLE SCREEN</button></div></section>
-<section id="hall" class="screen hidden"><div class="panel"><h1>HALL OF HEROES</h1><div id="heroList"></div><button id="hallClose" class="menu gold">CLOSE THE BOOK</button></div></section>
-<script src="js/config.js"></script>
-<script src="js/audio.js"></script>
-<script src="js/controls.js"></script>
-<script src="js/juice.js"></script>
-<script src="js/combat.js"></script>
-<script src="js/renderer.js"></script>
-<script src="js/main.js"></script>
+<section id="title" class="screen"><div id="sign"><h1 class="logo">DEFEND<br>THE KEEP!</h1><div class="by">by Andy Linn</div><div class="ver">V. .129 · WALL POLISH</div><button id="start" class="menu gold">RAISE THE GATES</button><button id="hallOpen" class="menu">ROYAL RECORDS</button><button id="howOpen" class="menu">HOW TO PLAY</button></div></section>
+<section id="howScreen" class="screen hidden"><div class="panel howPanel"><h1>HOW TO PLAY</h1><div class="howText">
+<p><b>DEFEND THE KEEP.</b> Deploy troops with the unit buttons, then click the battlefield. Kills earn Royal Purse; a small amount also arrives organically.</p>
+<p><b>HEROES.</b> A soldier with 4 kills becomes a named Hero with an aura. Only living Heroes return for the next level. Veterans continue earning upgrades.</p>
+<p><b>STRATEGY.</b> Formation organizes nearby troops. Fall Back recalls them. Help sends nearby troops toward a threatened point. Injured Troop Retreat sends wounded defenders to heal. Toggle Aggressive or Defensive stance to control how far troops advance.</p>
+<p><b>TOWERS & WALLS.</b> Towers cost 20. Walls cost 10, snap together, and can attach to towers. Enemies walk around openings or batter through blocked defenses. Friendly gates open automatically.</p>
+<p><b>CAVALRY.</b> Knights deal 50% extra damage to archers and fire archers.</p>
+<p><b>DRAGON.</b> Costs 100. For about 9 seconds use the ARROW KEYS to steer it. Fire blasts enemies within about 80 pixels; then the Dragon flies away.</p>
+<p><b>LEVELS.</b> Survive the full enemy army, choose a Royal Workshop improvement, then face a stronger assault. Enemy HP, damage and attack rate rise each level, but marching speed does not.</p>
+<p><b>NATIONS.</b> Your chosen realm grants a special bonus. The invading nation is randomly selected and receives its corresponding advantage.</p>
+<p><b>OTHER.</b> Music can be toggled at upper left. Press Q for Developer Mode.</p></div><button id="howClose" class="menu gold">BACK</button></div></section>
+<section id="nameScreen" class="screen hidden"><div class="nameBox"><h2>WHO COMMANDS THE KEEP?</h2><p>Enter the name your heroes will proudly serve.</p><input id="playerName" maxlength="18" autocomplete="name" placeholder="Andy">
+<h3>FOR WHAT NATION DO YOU RAISE YOUR FLAG?</h3>
+<div id="nationGrid" class="nationGrid"></div>
+<button id="nameGo" class="menu gold">BEGIN THE DEFENSE</button></div></section>
+<section id="over" class="screen hidden"><div class="panel"><h1>THE KEEP HAS FALLEN</h1><p id="summary"></p><button id="again" class="menu gold">DEFEND AGAIN</button><button id="hallOver" class="menu">ROYAL RECORDS</button><button id="backTitle" class="menu">TITLE SCREEN</button></div></section>
+<section id="hall" class="screen hidden"><div class="hallTorch leftTorch outerTorch"><i></i><b></b></div><div class="hallTorch leftTorch innerTorch"><i></i><b></b></div><div class="panel heroBook"><h1>ROYAL RECORDS</h1><p class="bookSub">THE GREATEST REIGNS OF ALL TIME</p><div id="heroList"></div><button id="hallClose" class="menu gold">CLOSE THE BOOK</button></div><div class="hallTorch rightTorch innerTorch"><i></i><b></b></div><div class="hallTorch rightTorch outerTorch"><i></i><b></b></div></section>
+
+<section id="levelIntro" class="screen campaignScreen hidden"><div class="phaseCard"><div id="phaseDay" class="phaseDay">DAY ONE</div><h1 id="phaseName">DAWN</h1><p id="phaseSubtitle">The northern host approaches.</p></div></section>
+<section id="researchScreen" class="screen campaignScreen hidden"><div class="panel researchPanel"><div class="phaseDay">THE ROYAL WORKSHOP</div><h1>YOUR COURT SCIENTISTS HAVE BEEN BUSY</h1><p>Only one proposal can be completed before the enemy returns.</p><div id="researchChoices" class="researchChoices"></div></div></section>
+<section id="levelComplete" class="screen campaignScreen hidden"><div class="panel"><div class="phaseDay">THE FIELD FALLS QUIET</div><h1 id="completeTitle">DAWN SURVIVED</h1><div id="levelStats" class="levelStats"></div><button id="continueResearch" class="menu gold">CONSULT THE ROYAL WORKSHOP</button></div></section>
+<section id="victory" class="screen campaignScreen hidden"><div class="panel"><div class="phaseDay">THE SUN RISES AGAIN</div><h1>THE KEEP ENDURES</h1><p id="victorySummary"></p><button id="victoryAgain" class="menu gold">DEFEND ANOTHER DAY</button><button id="victoryTitle" class="menu">TITLE SCREEN</button></div></section>
 
 <section id="devPanel" class="devPanel hidden" aria-label="Developer mode">
  <div class="devHead"><b>DEVELOPER MODE</b><span>Q to toggle</span><button id="devClose">×</button></div>
  <div class="devStats"><span>FPS <b id="devFps">60</b></span><span>ENEMIES <b id="devEnemies">0</b></span><span>UNITS <b id="devUnits">0</b></span><span>PARTICLES <b id="devParticles">0</b></span><span>DEATHS <b id="devDeaths">0</b></span></div>
  <div class="devGrid">
-  <button id="devPause">PAUSE</button><button id="devCoins">∞ COINS</button><button id="devHitStop" class="active">HIT STOP</button>
+  <button id="devPause">PAUSE</button><button id="devCoins">∞ COINS</button><button id="devHitStop" class="active">HIT STOP</button><button id="devPlayerNation" class="active">PLAYER NATION: ON</button><button id="devEnemyNation" class="active">ENEMY NATION: ON</button>
   <button id="devRaider">SPAWN RAIDER</button><button id="devBerserker">SPAWN BERSERKER</button><button id="devKnight">SPAWN KNIGHT</button>
   <button id="devCatapult">SPAWN CATAPULT</button><button id="devDragon">SPAWN DRAGON</button><button id="devHero">SPAWN HERO</button>
   <button id="devKill">KILL ALL</button><button id="devKeep">HIT KEEP −20</button>
  </div>
 </section>
+<script src="js/config.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/controls.js"></script>
+<script src="js/juice.js"></script>
+<script src="js/campaign.js"></script>
+<script src="js/combat.js"></script>
+<script src="js/renderer.js"></script>
+<script src="js/main.js"></script>
 </body></html>
